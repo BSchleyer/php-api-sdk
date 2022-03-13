@@ -89,10 +89,22 @@ class DedicatedServer extends ProductModel {
     }
 
     /**
+     * Returns all available os templates
+     * @return APIResponse
+     * @throws GuzzleException
+     */
+    public function getTemplates() {
+        $response = $this->getClient()->get("product/dedicated-server/templates");
+
+        return new APIResponse($response);
+    }
+
+    /**
      * Gets the temperature and fan sensors of the server
      * @param string $serverUuid
      * @return APIResponse
      * @throws GuzzleException
+     * @deprecated This endpoint temporarly does not return any data
      */
     public function getSensors(string $serverUuid) {
         $response = $this->getClient()->get("product/dedicated-server/{$serverUuid}/sensor");
@@ -101,37 +113,44 @@ class DedicatedServer extends ProductModel {
     }
 
     /**
-     * Gets the temperature and fan sensors of the server
+     * Returns the console url
      * @param string $serverUuid
      * @return APIResponse
      * @throws GuzzleException
      */
-    public function getIpmiData(string $serverUuid) {
-        $response = $this->getClient()->get("product/dedicated-server/{$serverUuid}/ipmidata");
+    public function getConsole(string $serverUuid) {
+        $response = $this->getClient()->get("product/dedicated-server/{$serverUuid}/console");
 
         return new APIResponse($response);
     }
 
     /**
-     * Disables IPMI
+     * Starts a reinstallation of the operating system - this cannot be undone!
      * @param string $serverUuid
+     * @param string $hostname
+     * @param int $templateId, see getTemplates()
      * @return APIResponse
      * @throws GuzzleException
      */
-    public function disableIpmi(string $serverUuid) {
-        $response = $this->getClient()->post("product/dedicated-server/{$serverUuid}/ipmi/disable");
+    public function reinstallServer(string $serverUuid, string $hostname, int $templateId) {
+        $response = $this->getClient()->post("product/dedicated-server/{$serverUuid}/installation/create", [
+            'form_params' => [
+                "template" => $templateId,
+                "hostname" => $hostname
+            ]
+        ]);
 
         return new APIResponse($response);
     }
 
     /**
-     * Enables IPMI
+     * Gets the current installation status
      * @param string $serverUuid
      * @return APIResponse
      * @throws GuzzleException
      */
-    public function enableIpmi(string $serverUuid) {
-        $response = $this->getClient()->post("product/dedicated-server/{$serverUuid}/ipmi/enable");
+    public function installationStatus(string $serverUuid) {
+        $response = $this->getClient()->get("product/dedicated-server/{$serverUuid}/installation/status");
 
         return new APIResponse($response);
     }

@@ -2,6 +2,7 @@
 
 namespace dashserv\api;
 
+use dashserv\api\Models\Account;
 use dashserv\api\Models\Product\DedicatedServer;
 use dashserv\api\Models\Order;
 use dashserv\api\Models\Product\VServer;
@@ -57,6 +58,13 @@ class dashservApiClient {
      */
     public function order(): Order {
         return new Order($this->client);
+    }
+
+    /**
+     * @return Account
+     */
+    public function account(): Account {
+        return new Account($this->client);
     }
 
 }
