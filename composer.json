@@ -1,4 +1,6 @@
 {
+    "version": "1.1",
+    "homepage": "https://dashserv.io",
     "name": "dashserv/php-api-sdk",
     "description": "An official PHP SDK for the dashserv REST-API",
     "type": "library",
