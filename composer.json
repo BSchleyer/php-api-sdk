@@ -1,5 +1,5 @@
 {
-    "version": "1.1",
+    "version": "1.0",
     "homepage": "https://dashserv.io",
     "name": "bschleyer/php-api-sdk",
     "description": "An unofficial PHP SDK for the dashserv REST-API",
